@@ -16,6 +16,7 @@
 #define _PHL_CMD_SER_C_
 #include "phl_headers.h"
 #include "phl_api.h"
+#include "phl_api_drv.h"
 
 #define CMD_SER_L0 0x00000001
 #define CMD_SER_L1 0x00000002
@@ -122,7 +123,7 @@ _ser_event_notify(void *phl, u8 *p_ntfy)
 	return phl_ser_send_msg(phl, notify);
 }
 
-void _ser_dump_stsl2(struct cmd_ser *cser)
+static void _ser_dump_stsl2(struct cmd_ser *cser)
 {
 	u8 idx =0;
 
@@ -134,7 +135,7 @@ void _ser_dump_stsl2(struct cmd_ser *cser)
 	}
 }
 
-void _ser_reset_status(struct cmd_ser *cser)
+static void _ser_reset_status(struct cmd_ser *cser)
 {
 	void *drv = phl_to_drvpriv(cser->phl_info);
 
@@ -152,7 +153,7 @@ void _ser_reset_status(struct cmd_ser *cser)
 	}
 }
 
-void _ser_set_status(struct cmd_ser *cser, u8 serstatus)
+static void _ser_set_status(struct cmd_ser *cser, u8 serstatus)
 {
 	void *drv = phl_to_drvpriv(cser->phl_info);
 
@@ -161,7 +162,7 @@ void _ser_set_status(struct cmd_ser *cser, u8 serstatus)
 	_os_spinunlock(drv, &cser->_lock, _bh, NULL);
 }
 
-void _ser_clear_status(struct cmd_ser *cser, u8 serstatus)
+static void _ser_clear_status(struct cmd_ser *cser, u8 serstatus)
 {
 	void *drv = phl_to_drvpriv(cser->phl_info);
 
@@ -216,7 +217,7 @@ static void _ser_l2_notify(struct cmd_ser *cser)
 static void _ser_m2_notify(struct cmd_ser *cser)
 {
 	struct phl_info_t *phl_info = cser->phl_info;
-	enum rtw_hal_status status = RTW_PHL_STATUS_FAILURE;
+	enum rtw_hal_status status = (enum rtw_hal_status)RTW_PHL_STATUS_FAILURE;
 
 	if (CMD_SER_SRC_INT_NOTIFY == cser->evtsrc)
 		_ser_int_ntfy_ctrl(phl_info, RTW_PHL_SER_HANDSHAKE_MODE);
@@ -249,7 +250,7 @@ static void _ser_m3_m5_waiting(struct cmd_ser *cser)
 static void _ser_m4_notify(struct cmd_ser *cser)
 {
 	struct phl_info_t *phl_info = cser->phl_info;
-	enum rtw_hal_status status = RTW_PHL_STATUS_FAILURE;
+	enum rtw_hal_status status = (enum rtw_hal_status)RTW_PHL_STATUS_FAILURE;
 
 	if (CMD_SER_SRC_INT_NOTIFY == cser->evtsrc)
 		_ser_int_ntfy_ctrl(phl_info, RTW_PHL_SER_HANDSHAKE_MODE);
@@ -391,7 +392,7 @@ err:
 	return;
 }
 
-enum phl_mdl_ret_code
+static enum phl_mdl_ret_code
 _ser_fail_ev_hdlr(void *dispr, void *priv, struct phl_msg *msg)
 {
 	struct cmd_ser *cser = (struct cmd_ser *)priv;
@@ -409,7 +410,7 @@ _ser_fail_ev_hdlr(void *dispr, void *priv, struct phl_msg *msg)
 	return MDL_RET_SUCCESS;
 }
 
-enum phl_mdl_ret_code
+static enum phl_mdl_ret_code
 _ser_hdl_external_evt(void *dispr, void *priv, struct phl_msg *msg)
 {
 	struct cmd_ser *cser = (struct cmd_ser *)priv;
@@ -578,7 +579,7 @@ static void _ser_msg_hdl_m9(struct cmd_ser *cser)
 	_ser_reset_status(cser);
 }
 
-enum phl_mdl_ret_code
+static enum phl_mdl_ret_code
 _ser_hdl_internal_evt(void *dispr, void *priv, struct phl_msg *msg)
 {
 	struct cmd_ser *cser = (struct cmd_ser *)priv;
@@ -816,7 +817,7 @@ phl_register_ser_module(struct phl_info_t *phl_info)
 }
 
 #ifdef CONFIG_PHL_CMD_SER
-u8 phl_ser_inprogress(void *phl)
+static u8 phl_ser_inprogress(void *phl)
 {
 	struct phl_module_op_info op_info = {0};
 	u8 state = 0;

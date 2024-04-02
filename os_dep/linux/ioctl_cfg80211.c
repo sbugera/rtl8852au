@@ -465,17 +465,21 @@ u8 rtw_cfg80211_ch_switch_notify(_adapter *adapter, u8 ch, u8 bw, u8 offset,
 		 *  called by others with block-tx.
 		 */
 
-		cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef,
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
-		 0, 0, false, 0);
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 9, 0)
+                cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef, 0, 0, false);
 #else
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0)
-		 0,
-#endif
-		 0, false);
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0))
+                cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef, 0, 0, false, 0);
+#else
+                cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef, 0, 0, false);
 #endif
 #else
-		cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef, 0);
+                cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef, 0, false);
+#endif
+#endif
+#else
+                cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef, 0);
 #endif
 		goto exit;
 	}
@@ -484,12 +488,18 @@ u8 rtw_cfg80211_ch_switch_notify(_adapter *adapter, u8 ch, u8 bw, u8 offset,
 	if (!rtw_cfg80211_allow_ch_switch_notify(adapter))
 		goto exit;
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
-	cfg80211_ch_switch_notify(adapter->pnetdev, &chdef, 0, 0);
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 2)
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 2))
 	cfg80211_ch_switch_notify(adapter->pnetdev, &chdef, 0);
 #else
-	cfg80211_ch_switch_notify(adapter->pnetdev, &chdef);
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 2))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0))
+        cfg80211_ch_switch_notify(adapter->pnetdev, &chdef, 0, 0);
+#else
+        cfg80211_ch_switch_notify(adapter->pnetdev, &chdef, 0);
+#endif
+#else
+        cfg80211_ch_switch_notify(adapter->pnetdev, &chdef);
+#endif
 #endif
 #else
 	int freq = rtw_ch2freq(ch);

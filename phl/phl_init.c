@@ -29,7 +29,7 @@ static void _phl_com_init_rssi_stat(struct rtw_phl_com_t *phl_com)
 	_os_spinlock_init(phl_com->drv_priv, &(phl_com->rssi_stat.lock));
 }
 
-void _phl_com_deinit_rssi_stat(struct rtw_phl_com_t *phl_com)
+static void _phl_com_deinit_rssi_stat(struct rtw_phl_com_t *phl_com)
 {
 	_os_spinlock_free(phl_com->drv_priv, &(phl_com->rssi_stat.lock));
 }
