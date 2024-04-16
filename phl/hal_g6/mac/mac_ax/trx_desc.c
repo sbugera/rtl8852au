@@ -180,6 +180,8 @@ static u32 txdes_proc_data(struct mac_ax_adapter *adapter,
 		qsel = info->band ? MAC_AX_HI1_SEL : MAC_AX_HI0_SEL;
 	else
 		qsel = (info->wmm << 2) | qsel_l[info->tid];
+	if (info->tid >= TID_MAX_NUM)
+		info->tid = TID_MAX_NUM - 1;
 	wdb->dword2 =
 		cpu_to_le32(SET_WORD(info->pktlen, AX_TXD_TXPKTSIZE) |
 			    SET_WORD(qsel, AX_TXD_QSEL) |
