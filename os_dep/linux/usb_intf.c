@@ -145,7 +145,6 @@ static void rtw_dev_shutdown(struct device *dev)
 
 /* DID_USB_v916_20130116 */
 static struct usb_device_id rtw_usb_id_tbl[] = {
-#ifdef CONFIG_RTL8852A
 	/*=== Realtek demoboard ===*/
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x8832, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x885A, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
@@ -163,6 +162,7 @@ static struct usb_device_id rtw_usb_id_tbl[] = {
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_DLINK, 0x3321, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
 
         /*=== TP-Link AX1800 ===*/
+	{USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0100, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_TPLINK, 0x013f, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_TPLINK, 0x0140, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
 
@@ -171,16 +171,6 @@ static struct usb_device_id rtw_usb_id_tbl[] = {
 
 	/*=== ELECOMWDC-X1201DU3 ===*/
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_ELECOM, 0x4020, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
-
-#endif /* CONFIG_RTL8852A */
-
-#ifdef CONFIG_RTL8852B
-	/*=== Realtek demoboard ===*/
-	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0xB832, 0xff, 0xff, 0xff), .driver_info = RTL8852B},
-	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0xB83A, 0xff, 0xff, 0xff), .driver_info = RTL8852B},
-	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0xB852, 0xff, 0xff, 0xff), .driver_info = RTL8852B},
-	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0xB85A, 0xff, 0xff, 0xff), .driver_info = RTL8852B},
-#endif /* CONFIG_RTL8852B */
 
 	{}	/* Terminating entry */
 };
