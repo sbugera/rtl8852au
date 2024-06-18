@@ -14,6 +14,7 @@
  *****************************************************************************/
 #define _PHL_CMD_BTC_C_
 #include "phl_headers.h"
+#include "phl_api_drv.h"
 
 #ifdef CONFIG_BTCOEX
 #ifdef CONFIG_PHL_CMD_BTC
@@ -192,7 +193,7 @@ _btc_external_pre_msg_hdlr(struct phl_info_t *phl_info,
 			PHL_INFO("[BTCCMD], MSG_EVT_SCAN_START \n");
 
 			band = hal_com->band[msg->band_idx].cur_chandef.band;
-			rtw_hal_btc_scan_start_ntfy(phl_info->hal, msg->band_idx, band);
+			rtw_hal_btc_scan_start_ntfy(phl_info->hal, (enum phl_phy_idx)msg->band_idx, band);
 
 			ret = MDL_RET_SUCCESS;
 			break;
@@ -227,7 +228,7 @@ _btc_external_post_msg_hdlr(struct phl_info_t *phl_info,
 				break;
 
 			PHL_DBG("[BTCCMD], MSG_EVT_SCAN_END \n");
-			rtw_hal_btc_scan_finish_ntfy(hal_info, msg->band_idx);
+			rtw_hal_btc_scan_finish_ntfy(hal_info, (enum phl_phy_idx)msg->band_idx);
 			ret = MDL_RET_SUCCESS;
 			break;
 

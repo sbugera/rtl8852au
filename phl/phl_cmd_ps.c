@@ -14,6 +14,7 @@
  *****************************************************************************/
 #define _PHL_CMD_PS_C_
 #include "phl_headers.h"
+#include "phl_api_drv.h"
 
 /* structure of a power request */
 struct pwr_req {
@@ -188,7 +189,7 @@ _lps_state_judge_changed(struct cmd_ps *ps, u16 macid, u8 cur_state, u8 *new_sta
  * @ps: see cmd_ps
  * @leave_proto: whether to leave protocol
  */
-enum rtw_phl_status _leave_ps(struct cmd_ps *ps, bool leave_proto)
+static enum rtw_phl_status _leave_ps(struct cmd_ps *ps, bool leave_proto)
 {
 	struct phl_info_t *phl_info = ps->phl_info;
 	enum rtw_phl_status status = RTW_PHL_STATUS_FAILURE;
@@ -262,7 +263,7 @@ enum rtw_phl_status _leave_ps(struct cmd_ps *ps, bool leave_proto)
  * @ps_mode: target ps mode to enter
  * @macid : target macid to enter lps
  */
-enum rtw_phl_status _enter_ps(struct cmd_ps *ps, u8 ps_mode, u16 macid)
+static enum rtw_phl_status _enter_ps(struct cmd_ps *ps, u8 ps_mode, u16 macid)
 {
 	enum rtw_phl_status status = RTW_PHL_STATUS_FAILURE;
 	struct ps_cfg cfg = {0};

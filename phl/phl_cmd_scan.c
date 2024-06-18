@@ -196,7 +196,7 @@ next_ch:
 }
 
 /* Notification complete */
-void _cmd_scan_timer_notify_cb(
+static void _cmd_scan_timer_notify_cb(
 	void *role, struct phl_msg *msg)
 {
 	if (IS_MSG_CANNOT_IO(msg->msg_id)) {
@@ -242,7 +242,7 @@ static void _cmd_scan_timer(void* role)
 }
 
 /* Notification complete */
-void _cmd_swch_done_notify_cb(
+static void _cmd_swch_done_notify_cb(
 	void *drv, struct phl_msg *msg)
 {
 	if (msg->inbuf) {
@@ -250,7 +250,7 @@ void _cmd_swch_done_notify_cb(
 	}
 }
 
-enum rtw_phl_status _cmd_swch_done_notify(
+static enum rtw_phl_status _cmd_swch_done_notify(
 	void *dispr, void *drv, struct rtw_phl_scan_param *param)
 {
 	enum rtw_phl_status pstatus = RTW_PHL_STATUS_SUCCESS;
@@ -290,7 +290,7 @@ enum rtw_phl_status _cmd_swch_done_notify(
 	return pstatus;
 }
 
-void _cmd_scan_end(
+static void _cmd_scan_end(
 	void *drv, struct rtw_phl_scan_param *param)
 {
 	struct rtw_wifi_role_t *wifi_role = param->wifi_role;
@@ -326,7 +326,7 @@ void _cmd_scan_end(
 }
 
 /* Notification complete */
-void _cmd_abort_notify_cb(
+static void _cmd_abort_notify_cb(
 	void *drv, struct phl_msg *msg)
 {
 	struct rtw_phl_scan_param *param = (struct rtw_phl_scan_param *)msg->inbuf;
@@ -337,7 +337,7 @@ void _cmd_abort_notify_cb(
 	_cmd_scan_end(drv, param);
 }
 
-void _cmd_abort_notify(void *dispr, void *drv,
+static void _cmd_abort_notify(void *dispr, void *drv,
 	struct rtw_phl_scan_param *param, bool abort)
 {
 	enum rtw_phl_status pstatus = RTW_PHL_STATUS_SUCCESS;
@@ -395,7 +395,7 @@ void _cmd_abort_notify(void *dispr, void *drv,
 	}
 }
 
-enum phl_mdl_ret_code _cmd_scan_fail_ev_hdlr(
+static enum phl_mdl_ret_code _cmd_scan_fail_ev_hdlr(
 	void* dispr, void* priv, struct phl_msg* msg)
 {
 	struct rtw_phl_scan_param *param = (struct rtw_phl_scan_param*)priv;
@@ -455,7 +455,7 @@ enum phl_mdl_ret_code _cmd_scan_fail_ev_hdlr(
 	return MDL_RET_SUCCESS;
 }
 
-enum phl_mdl_ret_code _cmd_scan_hdl_external_evt(
+static enum phl_mdl_ret_code _cmd_scan_hdl_external_evt(
 	void* dispr, void* priv, struct phl_msg* msg)
 {
 	PHL_DBG("%s :: From others MDL =%d , EVT_ID=%d\n", __func__,
@@ -463,7 +463,7 @@ enum phl_mdl_ret_code _cmd_scan_hdl_external_evt(
 	return MDL_RET_IGNORE;
 }
 
-u8 _cmd_chk_ext_act_scan(struct rtw_phl_scan_param *param)
+static u8 _cmd_chk_ext_act_scan(struct rtw_phl_scan_param *param)
 {
 #ifdef RTW_WKARD_CMD_SCAN_EXTEND_ACTIVE_SCAN
 	/** suppose to query the time of last recieved beacon in current channel here
@@ -483,7 +483,7 @@ u8 _cmd_chk_ext_act_scan(struct rtw_phl_scan_param *param)
 	return false;
 }
 
-void
+static void
 _cmd_scan_start(struct phl_info_t *phl_info,
 		struct rtw_wifi_role_t *wifi_role,
 		struct rtw_phl_scan_param *param)
@@ -494,7 +494,7 @@ _cmd_scan_start(struct phl_info_t *phl_info,
 	rtw_hal_com_scan_set_tx_lifetime(phl_info->hal, wifi_role->hw_band);
 }
 
-enum phl_mdl_ret_code _cmd_scan_hdl_internal_evt(
+static enum phl_mdl_ret_code _cmd_scan_hdl_internal_evt(
 	void* dispr, void* priv, struct phl_msg* msg)
 {
 	struct rtw_phl_scan_param *param = (struct rtw_phl_scan_param*)priv;
@@ -675,7 +675,7 @@ enum phl_mdl_ret_code _cmd_scan_hdl_internal_evt(
 }
 
 
-enum phl_mdl_ret_code _phl_cmd_scan_req_acquired(
+static enum phl_mdl_ret_code _phl_cmd_scan_req_acquired(
 	void* dispr, void* priv)
 {
 	enum rtw_phl_status pstatus = RTW_PHL_STATUS_SUCCESS;
@@ -728,7 +728,7 @@ error:
 	return MDL_RET_FAIL;
 }
 
-enum phl_mdl_ret_code _phl_cmd_scan_req_abort(
+static enum phl_mdl_ret_code _phl_cmd_scan_req_abort(
 	void* dispr, void* priv)
 {
 	struct rtw_phl_scan_param *param = (struct rtw_phl_scan_param*)priv;
@@ -740,7 +740,7 @@ enum phl_mdl_ret_code _phl_cmd_scan_req_abort(
 	return MDL_RET_SUCCESS;
 }
 
-enum phl_mdl_ret_code _phl_cmd_scan_req_ev_hdlr(
+static enum phl_mdl_ret_code _phl_cmd_scan_req_ev_hdlr(
 	void* dispr, void* priv,
 	struct phl_msg* msg)
 {
@@ -766,7 +766,7 @@ enum phl_mdl_ret_code _phl_cmd_scan_req_ev_hdlr(
 	return ret;
 }
 
-enum phl_mdl_ret_code _phl_cmd_scan_req_set_info(
+static enum phl_mdl_ret_code _phl_cmd_scan_req_set_info(
 	void* dispr, void* priv, struct phl_module_op_info* info)
 {
 	enum phl_mdl_ret_code ret = MDL_RET_IGNORE;
@@ -800,7 +800,7 @@ enum phl_mdl_ret_code _phl_cmd_scan_req_set_info(
 	return ret;
 }
 
-enum phl_mdl_ret_code _phl_cmd_scan_req_query_info(
+static enum phl_mdl_ret_code _phl_cmd_scan_req_query_info(
 	void* dispr, void* priv, struct phl_module_op_info* info)
 {
 	struct rtw_phl_scan_param *param = (struct rtw_phl_scan_param*)priv;

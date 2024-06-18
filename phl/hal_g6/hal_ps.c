@@ -14,10 +14,12 @@
  *****************************************************************************/
 #define _HAL_PS_C_
 #include "hal_headers.h"
+#include "../phl_api_drv.h"
+#include "hal_api.h"
 
 #define case_pwr_state(src) \
 	case PS_PWR_STATE_##src: return #src
-const char *hal_ps_pwr_state_to_str(u8 pwr_state)
+static const char *hal_ps_pwr_state_to_str(u8 pwr_state)
 {
 	switch (pwr_state) {
 	case_pwr_state(ACTIVE);
@@ -253,7 +255,7 @@ _hal_ps_pwr_lvl_cfg(struct rtw_phl_com_t *phl_com, struct hal_info_t *hal_info,
  */
 enum rtw_hal_status
 rtw_hal_ps_pwr_lvl_cfg(struct rtw_phl_com_t *phl_com, void *hal,
-			u8 req_pwr_lvl)
+			u32 req_pwr_lvl)
 {
 	enum rtw_hal_status status = RTW_HAL_STATUS_FAILURE;
 	struct hal_info_t *hal_info = (struct hal_info_t *)hal;

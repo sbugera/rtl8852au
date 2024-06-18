@@ -145,7 +145,6 @@ static void rtw_dev_shutdown(struct device *dev)
 
 /* DID_USB_v916_20130116 */
 static struct usb_device_id rtw_usb_id_tbl[] = {
-#ifdef CONFIG_RTL8852A
 	/*=== Realtek demoboard ===*/
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x8832, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x885A, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
@@ -163,6 +162,7 @@ static struct usb_device_id rtw_usb_id_tbl[] = {
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_DLINK, 0x3321, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
 
         /*=== TP-Link AX1800 ===*/
+	{USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0100, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_TPLINK, 0x013f, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_TPLINK, 0x0140, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
 
@@ -171,16 +171,6 @@ static struct usb_device_id rtw_usb_id_tbl[] = {
 
 	/*=== ELECOMWDC-X1201DU3 ===*/
 	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_ELECOM, 0x4020, 0xff, 0xff, 0xff), .driver_info = RTL8852A},
-
-#endif /* CONFIG_RTL8852A */
-
-#ifdef CONFIG_RTL8852B
-	/*=== Realtek demoboard ===*/
-	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0xB832, 0xff, 0xff, 0xff), .driver_info = RTL8852B},
-	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0xB83A, 0xff, 0xff, 0xff), .driver_info = RTL8852B},
-	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0xB852, 0xff, 0xff, 0xff), .driver_info = RTL8852B},
-	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0xB85A, 0xff, 0xff, 0xff), .driver_info = RTL8852B},
-#endif /* CONFIG_RTL8852B */
 
 	{}	/* Terminating entry */
 };
@@ -218,7 +208,7 @@ struct rtw_usb_drv usb_drv = {
 	.usbdrv.reset_resume   = rtw_dev_resume,
 #endif
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 19))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 19) && LINUX_VERSION_CODE < KERNEL_VERSION(6, 8, 0))
 	.usbdrv.drvwrap.driver.shutdown = rtw_dev_shutdown,
 #else
 	.usbdrv.driver.shutdown = rtw_dev_shutdown,
@@ -711,7 +701,7 @@ static int rtw_dev_resume(struct usb_interface *pusb_intf)
  * notes: drv_init() is called when the bus driver has located a card for us to support.
  *        We accept the new device by returning 0.
 */
-_adapter *rtw_usb_primary_adapter_init(struct dvobj_priv *dvobj,
+static _adapter *rtw_usb_primary_adapter_init(struct dvobj_priv *dvobj,
 	struct usb_interface *pusb_intf)
 {
 	_adapter *padapter = NULL;
