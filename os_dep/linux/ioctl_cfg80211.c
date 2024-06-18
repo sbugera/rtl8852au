@@ -468,7 +468,7 @@ u8 rtw_cfg80211_ch_switch_notify(_adapter *adapter, u8 ch, u8 bw, u8 offset,
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 9, 0)
                 cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef, 0, 0, false);
 #else
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0) || (RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(9, 0)))
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0) || (RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(9, 0))) 
                 cfg80211_ch_switch_started_notify(adapter->pnetdev, &chdef, 0, 0, false, 0);
 #else
@@ -491,7 +491,7 @@ u8 rtw_cfg80211_ch_switch_notify(_adapter *adapter, u8 ch, u8 bw, u8 offset,
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 9, 0))  
 	cfg80211_ch_switch_notify(adapter->pnetdev, &chdef, 0);
 #else
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 2))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 2) || (RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(9, 0)))
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0) || (RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(9, 0)))
         cfg80211_ch_switch_notify(adapter->pnetdev, &chdef, 0, 0);
 #else
@@ -5400,7 +5400,7 @@ exit:
 }
 
 static int cfg80211_rtw_change_beacon(struct wiphy *wiphy, struct net_device *ndev,
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 7, 0)
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 7, 0) || (RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(9, 0)))
 		struct cfg80211_ap_update *info)
 #else
 		struct cfg80211_beacon_data *info)
@@ -5417,7 +5417,7 @@ static int cfg80211_rtw_change_beacon(struct wiphy *wiphy, struct net_device *nd
 	 *	frames or %NULL
 	 * @proberesp_ies_len: length of proberesp_ies in octets
 	 */
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 7, 0)
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 7, 0) || (RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(9, 0)))
 	if (info->beacon.proberesp_ies_len > 0)
 		rtw_cfg80211_set_proberesp_ies(ndev, info->beacon.proberesp_ies, info->beacon.proberesp_ies_len);
 #else
@@ -5426,7 +5426,7 @@ static int cfg80211_rtw_change_beacon(struct wiphy *wiphy, struct net_device *nd
 #endif
 #endif /* not_yet */
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 7, 0)
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 7, 0) || (RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(9, 0)))
 	if (info->beacon.assocresp_ies_len > 0)
 		rtw_cfg80211_set_assocresp_ies(ndev, info->beacon.assocresp_ies, info->beacon.assocresp_ies_len);
 #else
@@ -5434,7 +5434,7 @@ static int cfg80211_rtw_change_beacon(struct wiphy *wiphy, struct net_device *nd
 		rtw_cfg80211_set_assocresp_ies(ndev, info->assocresp_ies, info->assocresp_ies_len);
 #endif
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 7, 0)
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 7, 0) || (RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(9, 0)))
 	ret = rtw_add_beacon(adapter, info->beacon.head, info->beacon.head_len, info->beacon.tail, info->beacon.tail_len);
 #else
 	ret = rtw_add_beacon(adapter, info->head, info->head_len, info->tail, info->tail_len);
