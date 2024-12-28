@@ -209,7 +209,7 @@ struct rtw_usb_drv usb_drv = {
 #endif
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 19) && LINUX_VERSION_CODE < KERNEL_VERSION(6, 8, 0))
-	.usbdrv.drvwrap.driver.shutdown = rtw_dev_shutdown,
+	.usbdrv.driver.shutdown = rtw_dev_shutdown,
 #else
 	.usbdrv.driver.shutdown = rtw_dev_shutdown,
 #endif
